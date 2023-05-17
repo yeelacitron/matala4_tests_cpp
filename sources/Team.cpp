@@ -19,5 +19,9 @@ namespace ariel{
     void Team::print(){
 
     }
+    Character* Team::getLeader() const{
+        Cowboy *b = new Cowboy("hi",Point(0,0));
+        return b;
+    }
     
 }

@@ -24,6 +24,7 @@ namespace ariel{
             virtual void attack(Team *other);
             int stillAlive();
             virtual void print();
+            Character* getLeader() const;
     };
 }
 

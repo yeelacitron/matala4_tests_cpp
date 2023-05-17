@@ -218,21 +218,47 @@ TEST_SUITE("Ninjas moves"){
     }
 }
 TEST_SUITE("Cowboys moves"){
-    TEST_CASE("shoot()"){
+    TEST_CASE("shoot()")
+    {
         Cowboy *cowboy1 = new Cowboy("enemy",Point(0, 0.75));
         Cowboy *cowboy2 = new Cowboy("enemy",Point(0, 0.75));
         for(int i =1;i<=5;i++){
             cowboy1->shoot(cowboy2);
             CHECK(cowboy1->hasboolets());
+            CHECK(cowboy2->isAlive());
             CHECK_EQ(cowboy2->getHitPoints(),100-(i*10));
             CHECK_EQ(cowboy1->getNumBullets(),6-i);
         }
         cowboy1->shoot(cowboy2);
         CHECK_FALSE(cowboy1->hasboolets());
         CHECK_EQ(cowboy1->getNumBullets(),0);
+        CHECK_THROWS(cowboy1->shoot(cowboy2));
         cowboy1->reload();
         CHECK_EQ(cowboy1->getNumBullets(),6);
-
-        
+        //after the for cowboy2 should die
+        for(int i =1;i<=5;i++){
+            cowboy1->shoot(cowboy2);
+            CHECK(cowboy1->hasboolets());
+            CHECK(cowboy2->isAlive());
+            CHECK_EQ(cowboy1->getNumBullets(),6-i);
+        }
+        CHECK_FALSE(cowboy2->isAlive());
     }
+}
+TEST_CASE("Teams attackes"){
+    YoungNinja young_t1("one_1",Point(0,0));
+    OldNinja old_t1("two_1",Point(0,0.5));
+    Cowboy cowboy_t1("three_1",Point(0.5,0));
+    YoungNinja young_t2("one_2",Point(0.75,0));
+    TrainedNinja trained("two_2",Point(0,0.75));
+    Cowboy old_t2("three_2",Point(0,0.25));
+    Team a(&young_t1);
+    Team2 b(&young_t2);
+    //check the leaders
+    CHECK_EQ(a.getLeader()->getName(),"one_1");
+    CHECK_EQ(b.getLeader()->getName(),"one_b");
+    a.attack(&b);
+    
+
+
 }
